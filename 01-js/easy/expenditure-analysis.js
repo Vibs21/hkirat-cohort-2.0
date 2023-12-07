@@ -49,7 +49,7 @@ calculateTotalSpentByCategory([
   {
     id: 1,
     timestamp: 1656076800000,
-    price: 10,
+    price: 20,
     category: 'Food',
     itemName: 'Pizza'
   },
