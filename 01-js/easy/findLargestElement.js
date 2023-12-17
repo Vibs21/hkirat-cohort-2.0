@@ -20,6 +20,6 @@ function findLargestElement(numbers) {
 
 
 
-findLargestElement([3.5, 7.2, 2.1, 9.8, 1.9]);
+findLargestElement([-3, -7, -2, -9, -1]);
 
 module.exports = findLargestElement;    
