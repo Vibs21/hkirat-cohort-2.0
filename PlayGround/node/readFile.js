@@ -10,4 +10,10 @@ console.log('hi there 1');
     
  };
 
- console.log('hi there 2')
+ function sum(a,b) {
+     a+b;
+ }
+
+
+
+ console.log('check', sum(2,3));
