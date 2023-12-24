@@ -28,3 +28,4 @@ yarn-error.log*
 src/assets/bootstrap-icons
 
 playground/week2/http-server/node_modules
+playground/week2/http-server/package-lock.json
