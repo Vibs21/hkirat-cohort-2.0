@@ -11,6 +11,4 @@ console.log('hi there 1');
      a+b;
  }
 
-
-
  console.log('check', sum(2,3));
