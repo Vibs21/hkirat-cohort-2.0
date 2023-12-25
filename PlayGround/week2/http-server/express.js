@@ -16,4 +16,10 @@ app.post('/postData', function(req, res) {
     res.send('done');
 })
 
+//localhost:3000/queryData?msg=123456&name=vaibhav
+app.post('/queryData', function(req, res) {
+    console.log("bodyy", req.query);
+    res.send('done');
+})
+
 app.listen(3000);
