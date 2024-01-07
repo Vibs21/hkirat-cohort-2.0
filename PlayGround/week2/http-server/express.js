@@ -4,8 +4,12 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(bodyParser.json());
 
-app.get('/', function(req, res) {
-    console.log("Someone is trying to access the homepage");
+const myMiddleWare = function(res,req,next) {
+    console.log("I am a middleware");
+    next();
+}
+
+app.get('/', myMiddleWare, function(req, res) {
     console.log("body", req.body);
     res.send('Hello Dostoo');
 });
@@ -13,7 +17,7 @@ app.get('/', function(req, res) {
 
 app.post('/postData', function(req, res) {
     console.log("bodyy", req.body);
-    res.send('done');
+    res.status(200).send('done');
 })
 
 //localhost:3000/queryData?msg=123456&name=vaibhav
