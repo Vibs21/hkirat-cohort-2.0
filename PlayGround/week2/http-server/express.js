@@ -2,7 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const app = express();
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
+app.use(express.json()); // we can use this as well
 
 const myMiddleWare = function(res,req,next) {
     console.log("I am a middleware");
