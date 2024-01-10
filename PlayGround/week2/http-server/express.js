@@ -15,9 +15,12 @@ app.get('/', myMiddleWare, function(req, res) {
     res.send('Hello Dostoo');
 });
 
-
 app.post('/postData', function(req, res) {
     console.log("bodyy", req.body);
+    /*
+    * /users/123, req.params will have { userId: '123' }
+    * - /search?keyword=express, req.query would be { keyword: 'express' }
+    */
     res.status(200).send('done');
 })
 
