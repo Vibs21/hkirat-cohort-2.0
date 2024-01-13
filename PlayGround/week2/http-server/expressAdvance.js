@@ -3,6 +3,20 @@ const bodyParser = require('body-parser');
 
 const app = express();
 app.use(bodyParser.json());
+// app.use(express.json()); // we can use this as well
+
+
+const someMiddleWare = function(req, res, next) {
+    console.log('middle called');
+    req.test = 'Hi from Middle ware';
+    next();
+}
+
+app.get('/', someMiddleWare, function(req, res) {
+    console.log("body", req.body);
+    console.log("data from middleware", req.test);
+    res.send('Hello Dostoo');
+});
 
 
 app.get('/auth', function(req,res) {
@@ -20,10 +34,7 @@ app.get('/auth', function(req,res) {
     })
 })
 
-app.get('/', function(req, res) {
-    console.log("body", req.body);
-    res.send('Hello Dostoo');
-});
+
 
 app.post('/postData', function(req, res) {
     console.log("bodyy", req.body);
