@@ -1,48 +1,58 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const zod = require('zod');
 
 const app = express();
 app.use(bodyParser.json());
-// app.use(express.json()); // we can use this as well
 
+const loginSchema = zod.object({
+    username: zod.string(),
+    password: zod.string()
+})
 
-const someMiddleWare = function(req, res, next) {
-    console.log('middle called');
-    req.test = 'Hi from Middle ware';
-    next();
-}
+const schema = zod.object({
+    email: zod.string().email(),
+    password: zod.string().min(3),
+    country: zod.literal("IN").or(zod.literal("US")),
+    age: zod.number().refine((num) => num > 18, {
+        message: 'age should be greater then 18',
+      })
+})
 
-app.get('/', someMiddleWare, function(req, res) {
-    console.log("body", req.body);
-    console.log("data from middleware", req.test);
-    res.send('Hello Dostoo');
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+  
+    try {
+      loginSchema.parse({ username, password });
+      console.log('heya your user is authenticated!')
+      res.json({ success: true });
+    } catch (error) {
+      res.status(400).json({ error: 'Invalid input.', details: error.errors });
+    }
+});
+
+app.post('/login2', (req, res) => {
+    const { email, password, country, age } = req.body;
+    try {
+        const result = schema.safeParse({ email, password, country, age }); //safeParse, 200, send error msg on obj
+        console.log('heya your user is authenticated!')
+        res.json(result);
+    } catch (error) {
+        res.status(400).json({ error: 'Invalid input.', details: error.errors });
+    }
 });
 
 
 app.get('/auth', function(req,res) {
     const userName = req.headers.userName;
     const password = req.headers.password;
-    const userId = req.headers.userId;
-
     if(userName != 'Vaibhav' && password != 'pass') {
         res.status(400).send({"msg":"Something is incorrectt!"})
         return
     }
-
     res.json({
         "msg": "You are now authenticated! Welcome!"
     })
-})
-
-
-
-app.post('/postData', function(req, res) {
-    console.log("bodyy", req.body);
-    /*
-    * /users/123, req.params will have { userId: '123' }
-    * - /search?keyword=express, req.query would be { keyword: 'express' }
-    */
-    res.status(200).send('done');
 })
 
 
