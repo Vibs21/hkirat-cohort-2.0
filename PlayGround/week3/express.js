@@ -7,11 +7,13 @@ app.use(express.json()); // we can use this as well
 
 const myMiddleWare = function(res,req,next) {
     console.log("I am a middleware");
+    req.test = 'Hi from Middle ware';
     next();
 }
 
 app.get('/', myMiddleWare, function(req, res) {
     console.log("body", req.body);
+    console.log("data from middleware", req.test);
     res.send('Hello Dostoo');
 });
 
