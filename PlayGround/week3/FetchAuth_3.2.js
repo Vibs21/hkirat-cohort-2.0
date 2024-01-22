@@ -26,19 +26,24 @@ const ALL_USERS = [
 
 function userExists(username, password) {
     console.log('userName', username);
-    return ALL_USERS.filter((user)=> { return user.username === username })
+    return (ALL_USERS.filter((user)=> { 
+      return user.username === username && user.password === password
+    })) > 0
 }
 
 app.post('/signin', (req, res) => {
     const {username, password} = req.body; 
-    const isUserExist = userExists(username);
+    const isUserExist = userExists(username, password);
     console.log('isUserExist: ', isUserExist);
-    res.status(200).json({'msg': req.body});
+    if(!isUserExist) {
+      res.status(401).json({'msg': ' Username or Password is incorrect'})
+    } 
+    res.status(200).json({'msg': isUserExist});
 });
 
 app.get('/users', (req, res)=> {
-    console.log(req.headers);
-    res.send({'msg': 'hello this is working!'})
+    // console.log(req.headers);
+    res.send({'usersList': ALL_USERS})
 })
 
 
