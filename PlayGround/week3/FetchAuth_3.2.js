@@ -1,6 +1,6 @@
 const express = require('express');
 const jwt = require("jsonwebtoken");
-const jwtPassword = "123456";
+const jwtPassword = "123456"; // it's kind of act like a key, who has it will be able to decrypt or encrypt
 
 const app = express();
 app.use(express.json());
@@ -26,24 +26,32 @@ const ALL_USERS = [
 
 function userExists(username, password) {
     console.log('userName', username);
-    return (ALL_USERS.filter((user)=> { 
+    return ALL_USERS.filter((user)=> { 
       return user.username === username && user.password === password
-    })) > 0
+    })
 }
 
 app.post('/signin', (req, res) => {
     const {username, password} = req.body; 
     const isUserExist = userExists(username, password);
     console.log('isUserExist: ', isUserExist);
-    if(!isUserExist) {
+    if(!(isUserExist.length === 1)) {
       res.status(401).json({'msg': ' Username or Password is incorrect'})
-    } 
-    res.status(200).json({'msg': isUserExist});
+      return;
+    }
+    const token = jwt.sign({username: username}, jwtPassword); 
+    res.status(200).json({'token': token});
 });
 
 app.get('/users', (req, res)=> {
     // console.log(req.headers);
-    res.send({'usersList': ALL_USERS})
+    const token = req.headers.authorization;
+    try {
+      const decoded = jwt.decode(token, jwtPassword);
+      res.send({'usersList': decoded.username});
+    } catch {
+      res.status(401).json({'msg': 'You do not have permission to access this route!'})
+    }
 })
 
 
