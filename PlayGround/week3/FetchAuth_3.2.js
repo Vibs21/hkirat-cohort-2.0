@@ -60,9 +60,14 @@ app.get('/users', (req, res)=> {
         }),
       });
     } catch {
-      res.status(401).json({'msg': 'You do not have permission to access this route!'})
+      //throw error from here to get it on the error middle writen at the bottom
+      throw new Error("You do not have permission to access this route!")
+      res.status(401).json({'msg': ''})
     }
 })
 
+app.use(function(err, req, res, next) {
+    res.status(401).send({err});
+})
 
 app.listen(3000);
