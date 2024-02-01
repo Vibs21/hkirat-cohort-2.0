@@ -67,7 +67,9 @@ app.get('/users', (req, res)=> {
 })
 
 app.use(function(err, req, res, next) {
-    res.status(401).send({err});
+  res.status(401);
+  res.send({ error: err.stack })
+
 })
 
 app.listen(3000);
