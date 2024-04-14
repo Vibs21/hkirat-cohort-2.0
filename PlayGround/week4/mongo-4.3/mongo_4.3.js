@@ -6,12 +6,12 @@ const jwtPassword = '123456'; // consider it as a key, who has it will be able t
 
 const app = express();
 app.use(express.json());
-
+ 
 main().catch((err) => console.log(err));
 
 async function main() {
   await mongoose.connect(
-    'mongodb+srv://vaibhavbajpayee2109:btv8U5TYzlFeqMUG@cluster0.itw4lsa.mongodb.net/userapp'
+    'mongodb+srv://vaibhavbajpayee2109:btv8U5TYzlFeqMUG@cluster0.itw4lsa.mongodb.net/userapptest'
   );
 }
 
@@ -22,6 +22,7 @@ const userSchema = new mongoose.Schema({
 });
 
 const User = mongoose.model('Users', userSchema);
+const User2 = mongoose.model('UsersTest', userSchema);
 
 function userExists(username, password) {
   console.log('userName', username);
