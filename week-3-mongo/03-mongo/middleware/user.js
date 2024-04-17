@@ -1,4 +1,4 @@
-const { User } = require('../db');
+const { User } = require('../db'); 
 
 const userMiddleware = async function (req, res, next) {
     // Implement user auth logic
