@@ -2,6 +2,8 @@ const { Router } = require('express');
 const router = Router();
 const userMiddleware = require('../middleware/user');
 const { User, Course } = require('../db');
+const {JWT_SECRET} = require('../config');
+const jwt = require('jsonwebtoken');
 
 // User Routes
 router.post('/signup', async (req, res) => {
@@ -18,8 +20,23 @@ router.post('/signup', async (req, res) => {
   }
 });
 
-router.post('/signin', (req, res) => {
-    // Implement admin signup logic
+router.post('/signin', async (req, res) => {
+  // Implement admin signup logic
+  const { username, password } = req.body;
+
+  const user = await User.find({
+    username: username,
+    password: password,
+  });
+
+  console.log('user', user)
+
+  if (user[0]) {
+    const token = jwt.sign({ username, type: 'user' }, JWT_SECRET);
+    res.status(200).send({ token });
+  } else {
+    return res.status(401).json({ message: 'Invalid Credentials' });
+  }
 });
 
 router.get('/courses', async (req, res) => {
@@ -31,7 +48,8 @@ router.get('/courses', async (req, res) => {
 router.post('/courses/:courseId', userMiddleware, async (req, res) => {
   // Implement course purchase logic
   const courseId = req.params.courseId;
-  const { username } = req.headers;
+  const { username } = res.decoded_jwt;
+  console.log('res', username);
   await User.updateOne(
     {
       username: username,
@@ -39,13 +57,11 @@ router.post('/courses/:courseId', userMiddleware, async (req, res) => {
     { $push: { purchasedCourses: courseId } }
   );
   res.json({ message: 'Course purchased successfully' });
-  console.log('user details', user, courseId);
 });
 
 router.get('/purchasedCourses', userMiddleware, async (req, res) => {
   // Implement fetching purchased courses logic
-  const { username } = req.headers;
-
+  const { username } = res.decoded_jwt;
   const user = await User.findOne({
     username: username,
   });

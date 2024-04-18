@@ -34,8 +34,10 @@ router.post('/signin', async (req, res) => {
   console.log('userdetails', userDetails);
 
   if(userDetails.length !== 0) {
+    const expiresIn = 3600; // 3rd parameter as object { expiresIn }
     const token = jwt.sign({
-        username
+        username,
+        "type": 'admin'
     }, JWT_SECRET);
     res.json({token: token});
   } else {
