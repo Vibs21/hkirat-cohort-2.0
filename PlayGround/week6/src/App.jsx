@@ -48,7 +48,9 @@ function App() {
         return <Todo key={todo.id} title={todo.title} desc={todo.desc} />
       })} */}
       <CardWrapper innerComponent={<TextComponent/>}/>
-      <CardWrapper innerComponent={<TextComponent2/>}/>
+      <CardWrapper>
+        <TextComponent2/>
+      </CardWrapper>
     </>
   )
 }
