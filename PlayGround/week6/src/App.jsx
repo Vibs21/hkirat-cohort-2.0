@@ -1,18 +1,65 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+// import { useState } from 'react'
 import './App.css'
-import Header from './component/Header'
+import CardWrapper from './component/CardWrapper'
+// import Header from './component/Header'
 
 function App() {
-  const [count, setCount] = useState(0)
+  // let counter = 3;
+  // const [todos, setTodo] = useState([{
+  //   id:1,
+  //   title: "go to gym",
+  //   desc: "go to gym everyday",
+  // },
+  // {
+  //   id:2,
+  //   title: "go to study",
+  //   desc: "Study everyday",
+  // }])
+
+  // const addTodo = () => {
+  //   console.log('hello')
+  //   setTodo([...todos, {
+  //     id: counter++,
+  //     title: "go to study",
+  //     desc: Math.random(),
+  //   }])
+  // }
+  function TextComponent () {
+    return (
+      <div>
+        Hi There Bro!
+      </div>
+    )
+  }
+  
+  function TextComponent2 () {
+    return (
+      <div>
+        Hi There from second component!
+      </div>
+    )
+  }
 
   return (
     <>
-      <Header title={'Hello '}></Header>
-      <Header title={'Testing '}></Header>
+      {/* <Header title={'Hello '}></Header> */}
+      {/* <button onClick={addTodo}>Add a Todo</button>
+      {todos.map(todo => {
+        return <Todo key={todo.id} title={todo.title} desc={todo.desc} />
+      })} */}
+      <CardWrapper innerComponent={<TextComponent/>}/>
+      <CardWrapper innerComponent={<TextComponent2/>}/>
     </>
   )
 }
+
+// function Todo ({title, desc}) {
+//     return(
+//       <div>
+//         <h2> {title}</h2>
+//         <h4> {desc}</h4>
+//       </div>
+//     )
+// }
 
 export default App
