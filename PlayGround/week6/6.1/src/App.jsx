@@ -1,9 +1,14 @@
 // import { useState } from 'react'
+import { useEffect } from 'react'
 import './App.css'
 import CardWrapper from './component/CardWrapper'
 // import Header from './component/Header'
 
 function App() {
+
+  useEffect( () => {
+    console.log('hi from use effect');
+  }, []) 
   // let counter = 3;
   // const [todos, setTodo] = useState([{
   //   id:1,
@@ -47,8 +52,8 @@ function App() {
       {todos.map(todo => {
         return <Todo key={todo.id} title={todo.title} desc={todo.desc} />
       })} */}
-      <CardWrapper innerComponent={<TextComponent/>}/>
-      <CardWrapper>
+      <CardWrapper innerComponent={<TextComponent/>}/> {/* Incorrect way */}
+      <CardWrapper>   {/* Correct way */}
         <TextComponent2/>
       </CardWrapper>
     </>
