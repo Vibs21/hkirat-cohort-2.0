@@ -2,33 +2,41 @@ import axios from 'axios'
 import './App.css'
 import { useState } from 'react'
 import { useEffect } from 'react';
+import UseMemo from './Component/useMemo';
 
 function App() {
-  const [todos, setTodos] = useState([]);
 
-  useEffect(() => {
-    axios.get("https://sum-server.100xdevs.com/todos").then((res) => {
-      console.log(res.data.todos);
-      setTodos(res.data.todos);
-    });
-  }, [])
+  const [todoId, setTodoId] = useState(1);
+  
  
   return (
     <div>
-        {
-          todos.map(todo => (
-            <Todo key={todo.id} title={todo.title} description={todo.description} />
-          ))
-        }
+      {/* <button onClick={()=> setTodoId(1)}>1</button>
+      <button onClick={()=> setTodoId(2)}>2</button>
+      <button onClick={()=> setTodoId(3)}>3</button>
+        <Todo id={todoId}/> */}
+
+      <UseMemo/>  
     </div>
   )
-}
+} 
 
-function Todo ({title,description}) {
+function Todo ({id}) {
+
+  const [todo, setTodo] = useState({});
+
+
+  useEffect(() => {
+    axios.get(`https://sum-server.100xdevs.com/todo?id=${id}`).then((res) => {
+      console.log(res.data);
+      setTodo(res.data.todo);
+    });
+  }, [id])
+
   return(
     <div> 
-      <h2> {title} </h2>
-      <h4> {description} </h4>
+      <h2> {todo.title} </h2>
+      <h4> {todo.description} </h4>
     </div>
   )
 }
