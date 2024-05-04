@@ -3,12 +3,13 @@ import './App.css'
 import { useState } from 'react'
 import { useEffect } from 'react';
 import UseMemo from './Component/useMemo';
+import UseCallBack from './Component/useCallback';
+import UseRef from './Component/useRef';
 
 function App() {
 
   const [todoId, setTodoId] = useState(1);
   
- 
   return (
     <div>
       {/* <button onClick={()=> setTodoId(1)}>1</button>
@@ -17,6 +18,10 @@ function App() {
         <Todo id={todoId}/> */}
 
       <UseMemo/>  
+
+      <UseCallBack/>
+
+      <UseRef/>
     </div>
   )
 } 
@@ -24,8 +29,7 @@ function App() {
 function Todo ({id}) {
 
   const [todo, setTodo] = useState({});
-
-
+  
   useEffect(() => {
     axios.get(`https://sum-server.100xdevs.com/todo?id=${id}`).then((res) => {
       console.log(res.data);
