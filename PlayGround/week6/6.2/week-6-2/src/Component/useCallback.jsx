@@ -40,16 +40,16 @@ function UseCallBack() {
       setCounter(counter + 1);
     }}>Counter ({counter})</button>
 
-    <DemoMemoComponent a={a}/>
+    <DemoMemoComponent value={inputValue} a={a}/>
   </div>
 }
 
 // props will act as a trigger for memo component, since it is taking a function and not value it won't work propertly
 // for fucntion, object, array memo will not work
-const DemoMemoComponent = memo(function({a}) {
+const DemoMemoComponent = memo(function({value , a}) {
     console.log( " Child rerender" );
     return <div>
-    hi there {a()}
+    hi there {a()} from  {value}
     </div>
   })
 
