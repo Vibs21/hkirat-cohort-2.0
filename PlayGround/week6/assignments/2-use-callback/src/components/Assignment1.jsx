@@ -16,7 +16,9 @@ export function Assignment1() {
         console.log('decrement')
         /*
         * NOTE: 
-        * as it's doing it's calculation here itself using the
+        * as it's doing it's calculation here itself using the current value of the state variable, we don't need to put it in
+        * the depedency array, if the state value is been used to do something  in this callback then it should be added as a depedency,
+        * like in assignement 2
         */
         setCount(c => --c);
     }, [])
