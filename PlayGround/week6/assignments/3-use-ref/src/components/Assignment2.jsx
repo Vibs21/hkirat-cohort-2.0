@@ -13,6 +13,7 @@ export function Assignment2() {
         forceRender(Math.random());
     };
     
+    //NOTE: useRef: 
     numberOfTimeReRendered.current = numberOfTimeReRendered.current + 1;
 
     return (
