@@ -21,8 +21,8 @@ function App() {
     //   </Routes>
     // </BrowserRouter>
     <div>
-      <CountContext.Provider value={count} >
-        <Count count={count} setCount={setCount} />
+      <CountContext.Provider value={{count, setCount}} >
+        <Count  />
       </CountContext.Provider>
 
       <App2></App2>
@@ -31,22 +31,24 @@ function App() {
   )
 }
 
-function Count({count, setCount}) {
+function Count() {
   return <div>
-    <CountRenderer count={count} />
-    <Buttons count={count} setCount={setCount} />
+    <CountRenderer  />
+    <Buttons />
   </div>
 }
 
 function CountRenderer() {
-  const count = useContext(CountContext);
+  const {count} = useContext(CountContext);
+  console.log('re-render')
   return <div>
     renderer: {count}
   </div>
 }
 
 
-function Buttons({count, setCount}) {
+function Buttons() {
+  const {count, setCount} = useContext(CountContext);
   return(
     <div>
       <button onClick={()=> {setCount(count+1)}}>Increase</button>
