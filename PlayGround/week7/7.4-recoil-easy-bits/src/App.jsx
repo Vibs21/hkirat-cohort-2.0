@@ -1,5 +1,6 @@
 import { useRecoilValue, RecoilRoot } from "recoil";
-import { jobsAtom, messageAtom, networkAtom, notificationAtom, notificationsAtom, totalNotificationSelector } from './atoms';
+import { jobsAtom, messageAtom, networkAtom, notificationAtom, notificationsAtom, todosAtomFamily, totalNotificationSelector, totalNotificationsSelector } from './atoms';
+import { useEffect } from 'react';
 
 function App() {
 
@@ -8,6 +9,8 @@ function App() {
     <div>
       <RecoilRoot>
         <MainApp/>
+        <TodoComponent atomId={1}/>
+        <TodoComponent atomId={2}/>
       </RecoilRoot>
     </div>
   )
@@ -17,14 +20,21 @@ function App() {
 
 function MainApp() {
 
+
+  useEffect(()=> {
+
+  }, [])
+
   const networkNotificationCount = useRecoilValue(networkAtom);
   const jobsNotificationCount = useRecoilValue(jobsAtom);
   const messageNotificationCount = useRecoilValue(messageAtom);
   const notificationCount = useRecoilValue(notificationAtom);
 
-  const totalNotifications = useRecoilValue(totalNotificationSelector);
+  const totalNotifications = useRecoilValue(totalNotificationsSelector);
+  
 
   const notifications = useRecoilValue(notificationsAtom);
+
 
   console.log('not', notifications);
 
@@ -38,16 +48,21 @@ function MainApp() {
       <button>Notifications ({notifications.notifications})</button>
 
       <button>Me ({totalNotifications})</button>
+
+      
     </>
   );
 }
 
-function button() {
+function TodoComponent({atomId}) {
 
+  const fromAtomFamily = useRecoilValue(todosAtomFamily(atomId));
+  console.log('fromAtomFamily', fromAtomFamily)
   return(
-    <button>
-
-    </button>
+    <div>
+      <h3> sda {fromAtomFamily.title}</h3>
+      <h4>{fromAtomFamily.description}</h4>
+    </div>
   )
 }
 
