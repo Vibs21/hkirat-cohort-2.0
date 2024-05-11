@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {atom, selector, atomFamily} from 'recoil';
+import {atom, selector, atomFamily,selectorFamily} from 'recoil';
 import { TODOS } from './todos';
 
 
@@ -10,6 +10,20 @@ export const todosAtomFamily = atomFamily({
         foundTodo = TODOS.find((val)=> val.id == id)
         return foundTodo;
     }
+})
+
+
+export const todoAtomSelectorFamily = atomFamily({
+    key: 'todoAtomSelectorFamily',
+    default: selectorFamily({
+        key: 'selectorFamily',
+        get: (id) => async ({get}) => {
+            // Retrieve the data from an API
+            await new Promise(resolve => setTimeout(()=> resolve(), 2000));
+            const res = await axios.get(`https://sum-server.100xdevs.com/todo?id=${id}`);
+            return res.data.todo;
+        }
+    })
 })
 
 
