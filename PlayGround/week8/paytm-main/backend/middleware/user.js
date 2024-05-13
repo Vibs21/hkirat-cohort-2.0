@@ -1,9 +1,8 @@
 
 
-const isUserAthenticated = (req, res, next) => {
-    console.log('isUserAthenticated calling in!!!')
-    next();
+const userMiddleWare = (req, res, next) => {
+    
 }
 
 
-module.exports = isUserAthenticated
+module.exports = userMiddleWare
