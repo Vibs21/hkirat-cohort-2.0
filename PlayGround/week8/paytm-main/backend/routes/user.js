@@ -1,8 +1,9 @@
 const { Router } = require('express');
-const isUserAthenticated = require('../middleware/user');
 const { User } = require('../db');
 const jwt = require('jsonwebtoken');
 const {JWT_SECRET} = require('../config');
+const userMiddleWare = require('../middleware/user');
+const isUserAthenticated = require('../middleware/user');
 const router = Router();
 
 //NOTE: Router module acts as a bridge to abstract the logic from the main index.js file to this and transactions file
@@ -34,7 +35,7 @@ router.post('/login', async (req, res) => {
           console.log( JWT_SECRET);
           const token = jwt.sign({ userName }, JWT_SECRET);
 
-          return res.status(201).json({ message: 'user login successfully', token: token });
+          return res.status(201).json({ message: 'user logged in successfully', token: token });
     } catch (err) {
       console.error('Error during login:', err);
       return res.status(404).json({ message: "something went wrong" });
@@ -42,8 +43,9 @@ router.post('/login', async (req, res) => {
   });
   
 
-router.get('/fetchallUsers', (req, res) => {
-  userModel.find();
+router.get('/fetchallUsers', isUserAthenticated, async (req, res) => {
+  const data = await User.find();
+  res.json({data: data});
 });
 
 module.exports = router;
