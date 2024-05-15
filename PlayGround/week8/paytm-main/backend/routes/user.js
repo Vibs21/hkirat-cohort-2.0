@@ -5,10 +5,20 @@ const { JWT_SECRET, SALT_ROUND } = require('../config');
 const isUserAthenticated = require('../middleware/user');
 const bcrypt = require('bcrypt');
 const router = Router();
-
+const zod = require('zod');
 //NOTE: Router module acts as a bridge to abstract the logic from the main index.js file to this and transactions file
 
+const signupBody = zod.object({
+  username: zod.string().email(),
+  firstName: zod.string(),
+  lastName: zod.string(),
+  password: zod.string(),
+});
+
 router.post('/user/signup', async (req, res) => {
+  
+    //TODO: const { success } = signupBody.safeParse(req.body);
+
   const { userName, firstName, lastName, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, SALT_ROUND);
   try {
@@ -22,7 +32,9 @@ router.post('/user/signup', async (req, res) => {
     });
     return res.send({ message: firstName + ' ' + 'welcome onboard!' });
   } catch (err) {
-    return res.status(411).json({ message: "Email already taken / Incorrect inputs" });
+    return res
+      .status(411)
+      .json({ message: 'Email already taken / Incorrect inputs' });
   }
 });
 
@@ -30,7 +42,7 @@ router.post('/user/signin', async (req, res) => {
   const { userName, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
 
-//   const isCorect = await bcrypt.compare(password, hash);
+  //   const isCorect = await bcrypt.compare(password, hash);
 
   try {
     const userDetails = await User.findOne({
