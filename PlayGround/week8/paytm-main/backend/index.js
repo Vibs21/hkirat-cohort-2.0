@@ -9,8 +9,8 @@ app.use(cors());
 app.use(express.json());
 
 //NOTE: Router MiddleWare
-app.use('/user', userRouter);
-app.use('/transaction', transactionRouter);
+app.use('/api/v1/', userRouter);
+app.use('/api/v1/', transactionRouter);
 // app.use('api/v1', userRouter);
 
 //OLD way of using Router

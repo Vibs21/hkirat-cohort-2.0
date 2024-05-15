@@ -8,7 +8,7 @@ const router = Router();
 
 //NOTE: Router module acts as a bridge to abstract the logic from the main index.js file to this and transactions file
 
-router.post('/signup', async (req, res) => {
+router.post('/user/signup', async (req, res) => {
   const { userName, firstName, lastName, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, SALT_ROUND);
   try {
@@ -22,11 +22,11 @@ router.post('/signup', async (req, res) => {
     });
     return res.send({ message: firstName + ' ' + 'welcome onboard!' });
   } catch (err) {
-    return res.status(404).json({ message: err });
+    return res.status(411).json({ message: "Email already taken / Incorrect inputs" });
   }
 });
 
-router.post('/login', async (req, res) => {
+router.post('/user/signin', async (req, res) => {
   const { userName, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -44,11 +44,11 @@ router.post('/login', async (req, res) => {
       .status(201)
       .json({ message: 'user logged in successfully', token: token });
   } catch (err) {
-    return res.status(411).json({ message: 'something went wrong' });
+    return res.status(404).json({ message: 'something went wrong' });
   }
 });
 
-router.get('/fetchallUsers', isUserAthenticated, async (req, res) => {
+router.get('/user/fetchallUsers', isUserAthenticated, async (req, res) => {
   const data = await User.find().select('userName firstName');
   res.json({ data: data });
 });
