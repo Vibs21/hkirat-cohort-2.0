@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
+const { DB_CONNECTION } = require('../config');
 
-const db = mongoose.connect(
-  'mongodb+srv://vaibhavbajpayee2109:1YaMUvGf8HPeKiqK@paytm.oaoeo4b.mongodb.net/paytm'
-);
+const db = mongoose.connect(DB_CONNECTION);
 
 const UserSchema = new mongoose.Schema({
-  userName: { type: String, require: true, unique: false },
+  userName: { type: String, required: true, unique: true },
+  firstName: { type: String, require: true },
+  lastName: { type: String, require: true },
   password: { type: String, require: true },
   balance: Number,
   date: Date,
