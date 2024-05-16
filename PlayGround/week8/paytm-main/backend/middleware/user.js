@@ -6,7 +6,7 @@ const isUserAthenticated = (req, res, next) => {
     let token = header.split(" ")[1];
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
-        console.log("decoded", decoded)
+        req.userName = jwt.decode(token, JWT_SECRET).userName;
         next();
     } catch(err) {
         console.log("error", err)
