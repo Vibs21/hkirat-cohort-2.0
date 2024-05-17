@@ -42,23 +42,33 @@ router.post('/user/signin', async (req, res) => {
   const { userName, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  //   const isCorect = await bcrypt.compare(password, hash);
-
+  // const isCorect = await bcrypt.compare(password, hash);
   try {
     const userDetails = await User.findOne({
       userName: userName,
       password: hashedPassword, // Ensure that the password is properly hashed and stored in the database
     });
-    console.log(JWT_SECRET);
     const token = jwt.sign({ userName }, JWT_SECRET);
-
-    return res
-      .status(201)
-      .json({ message: 'user logged in successfully', token: token });
+    return res.status(201).json({ message: 'user logged in successfully', token: token });
   } catch (err) {
     return res.status(404).json({ message: 'something went wrong' });
   }
 });
+
+router.put('/user/update', isUserAthenticated, async (req, res) => {
+    const { firstName, lastName, password } = req.body;
+    console.log('username', req.userName, firstName);
+    const filter = {userName: req.userName};
+    const update = {firstName: firstName, lastName: lastName};
+    try {
+      //NOTE: It's very important to add await in from of query, or else DB won't get updated,
+      // before every call put await
+        await User.findOneAndUpdate(filter, update);
+        return res.status(200).send({message: "Details updated successfully!"})
+    } catch(err) {
+
+    }
+})
 
 router.get('/user/fetchallUsers', isUserAthenticated, async (req, res) => {
   const data = await User.find().select('userName firstName');
