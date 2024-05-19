@@ -57,7 +57,6 @@ router.post('/user/signin', async (req, res) => {
 
 router.put('/user/update', isUserAthenticated, async (req, res) => {
     const { firstName, lastName, password } = req.body;
-    console.log('username', req.userName, firstName);
     const filter = {userName: req.userName};
     const update = {firstName: firstName, lastName: lastName};
     try {
@@ -68,6 +67,26 @@ router.put('/user/update', isUserAthenticated, async (req, res) => {
     } catch(err) {
 
     }
+})
+
+router.get("/bulk", isUserAthenticated, async (req, res) => {
+  const filter = req.query.filter || "";
+
+  console.log('filter', filter)
+
+  const users = await User.find({
+      $or: [{
+          firstName: {"$regex": filter, $options: 'i' } //NOTE: i for case-insensative
+        }
+      ]
+  }).select('userName firstName lastName _id')
+
+//   , {
+//     lastName: {
+//         "$regex": filter
+//     }
+// }
+  return res.send({users: users})
 })
 
 router.get('/user/fetchallUsers', isUserAthenticated, async (req, res) => {
