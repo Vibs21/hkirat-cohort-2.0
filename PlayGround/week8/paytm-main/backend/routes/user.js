@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const { User } = require('../db');
+const { User } = require('../db/db');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET, SALT_ROUND } = require('../config');
 const isUserAthenticated = require('../middleware/user');
@@ -40,18 +40,18 @@ router.post('/user/signup', async (req, res) => {
 
 router.post('/user/signin', async (req, res) => {
   const { userName, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  // const isCorect = await bcrypt.compare(password, hash);
   try {
-    const userDetails = await User.findOne({
-      userName: userName,
-      password: hashedPassword, // Ensure that the password is properly hashed and stored in the database
-    });
-    const token = jwt.sign({ userName }, JWT_SECRET);
-    return res.status(201).json({ message: 'user logged in successfully', token: token });
+    const userDetails = await User.findOne({userName: userName});
+    const matchResult = await bcrypt.compare(password, userDetails.password)
+    if(matchResult) {
+      const token = jwt.sign({ userName }, JWT_SECRET);
+      return res.status(201).json({ message: 'user logged in successfully', token: token });
+    } else {
+      return res.status(401).json({ message: 'Invalid Credentials!' });
+    }
+    
   } catch (err) {
-    return res.status(404).json({ message: 'something went wrong' });
+    return res.status(404).json({ message: 'Invalid Credentials!' });
   }
 });
 
@@ -64,6 +64,7 @@ router.put('/user/update', isUserAthenticated, async (req, res) => {
       // before every call put await
         await User.findOneAndUpdate(filter, update);
         return res.status(200).send({message: "Details updated successfully!"})
+        
     } catch(err) {
 
     }
