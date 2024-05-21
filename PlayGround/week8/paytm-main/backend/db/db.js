@@ -20,9 +20,15 @@ const TransactionSchema = new mongoose.Schema({
   date: Date,
 });
 
+const AccountSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  balance: {type: Number, required: true}
+})
+
 const User = mongoose.model('User', UserSchema);
 const Transactions = mongoose.model('Transactions', TransactionSchema);
+const Account = mongoose.model('Account', AccountSchema)
 
 //fire query using userModel
 
-module.exports = { User, Transactions };
+module.exports = { User, Transactions, Account };
