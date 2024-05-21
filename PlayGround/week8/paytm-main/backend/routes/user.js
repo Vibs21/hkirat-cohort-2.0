@@ -1,8 +1,8 @@
 const { Router } = require('express');
-const { User } = require('../db/db');
+const { User, Account } = require('../db/db');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET, SALT_ROUND } = require('../config');
-const isUserAthenticated = require('../middleware/user');
+const isUserAthenticated = require('../middleware/userAuthMiddleware');
 const bcrypt = require('bcrypt');
 const router = Router();
 const zod = require('zod');
@@ -19,16 +19,22 @@ router.post('/user/signup', async (req, res) => {
   
     //TODO: const { success } = signupBody.safeParse(req.body);
 
+    // signupBody.safeParse(req.body)
+
   const { userName, firstName, lastName, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, SALT_ROUND);
   try {
-    await User.create({
+    const user = await User.create({
       userName: userName,
       firstName: firstName,
       lastName: lastName,
       password: hashedPassword,
       balance: 0,
       date: new Date(),
+    });
+    Account.create({
+      userId: user._id,
+      balance: 1000
     });
     return res.send({ message: firstName + ' ' + 'welcome onboard!' });
   } catch (err) {
@@ -44,12 +50,12 @@ router.post('/user/signin', async (req, res) => {
     const userDetails = await User.findOne({userName: userName});
     const matchResult = await bcrypt.compare(password, userDetails.password)
     if(matchResult) {
-      const token = jwt.sign({ userName }, JWT_SECRET);
+      const token = jwt.sign({ userName, userId: userDetails._id }, JWT_SECRET);
       return res.status(201).json({ message: 'user logged in successfully', token: token });
     } else {
       return res.status(401).json({ message: 'Invalid Credentials!' });
     }
-    
+     
   } catch (err) {
     return res.status(404).json({ message: 'Invalid Credentials!' });
   }
