@@ -21,15 +21,14 @@ router.post('/user/signup', async (req, res) => {
 
     // signupBody.safeParse(req.body)
 
-  const { userName, firstName, lastName, password } = req.body;
+  const { email, firstName, lastName, password } = req.body;
   const hashedPassword = await bcrypt.hash(password, SALT_ROUND);
   try {
     const user = await User.create({
-      userName: userName,
       firstName: firstName,
       lastName: lastName,
+      email: email,
       password: hashedPassword,
-      balance: 0,
       date: new Date(),
     });
     Account.create({

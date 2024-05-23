@@ -59,9 +59,9 @@ router.post('/account/transfer', isUserAthenticated, async (req, res) => {
     
 // Commit the transaction
     await session.commitTransaction();
-    res.json({
-    message: "Transfer successful"
-});
+        res.json({
+        message: "Transfer successful"
+    });
 })
 
 module.exports = router;

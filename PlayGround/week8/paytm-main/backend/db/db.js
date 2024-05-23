@@ -4,11 +4,10 @@ const { DB_CONNECTION } = require('../config');
 const db = mongoose.connect(DB_CONNECTION);
 
 const UserSchema = new mongoose.Schema({
-  userName: { type: String, required: true, unique: true },
   firstName: { type: String, require: true },
   lastName: { type: String, require: true },
+  email: { type: String, required: true, unique: true },
   password: { type: String, require: true },
-  balance: Number,
   date: Date,
 });
 
