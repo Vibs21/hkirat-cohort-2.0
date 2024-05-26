@@ -45,8 +45,7 @@ function SignUp() {
             </button>
             <div>
               Already have an account? 
-              <a className="inline-block align-baseline font-bold text-sm ml-1 underline"
-                href="#">
+              <a className="inline-block align-baseline font-bold text-sm ml-1 underline" onClick={()=> {navigate('/signin')}}>
                  Login
               </a>
             </div>

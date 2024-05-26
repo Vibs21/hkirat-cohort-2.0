@@ -2,11 +2,14 @@ import { useState } from 'react';
 import { Heading } from '../components/Heading'
 import { InputBox } from '../components/InputBox'
 import { SubHeading } from '../components/SubHeader'
+import { useNavigate } from 'react-router-dom';
 
 
 function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const userSignin = () => {
     console.log("email: ", email, "password: ", password);
@@ -30,7 +33,7 @@ function Signin() {
             </button>
             <div>
               Don't have an account? 
-              <a className="inline-block align-baseline font-bold text-sm ml-1 underline">
+              <a className="inline-block align-baseline font-bold text-sm ml-1 underline" onClick={()=> {navigate('/signup')}}>
                  Sign Up
               </a>
             </div>
