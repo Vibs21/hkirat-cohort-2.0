@@ -3,6 +3,7 @@ import { Heading } from '../components/Heading'
 import { InputBox } from '../components/InputBox'
 import { SubHeading } from '../components/SubHeader'
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 
 function Signin() {
@@ -11,8 +12,13 @@ function Signin() {
 
   const navigate = useNavigate();
 
-  const userSignin = () => {
+  const userSignin = async () => {
     console.log("email: ", email, "password: ", password);
+    const response = await axios.post('http://localhost:3000/api/v1/user/signin',{
+      email,
+      password
+    })
+    console.log('res', response.data);
   }
 
     return (
