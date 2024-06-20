@@ -17,13 +17,13 @@ model User {
   id Int   @id @default(autoincrement())
   email String @unique
   firstName String
-  LastName String?
+  lastName String?
   password String
 }
 
 // ? is for optional
 
-model Todo {
+model Todo { 
   id Int @id @default(autoincrement())
   title String
   done Boolean @default(false)
