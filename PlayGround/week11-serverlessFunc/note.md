@@ -8,3 +8,9 @@
 
 
 # Note: Wrangler is the one responsible for running the http server
+
+
+*HONO Project 2*
+
+- npm create hono@latest hono-cldflare
+- 
