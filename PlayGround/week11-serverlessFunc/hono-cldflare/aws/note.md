@@ -28,7 +28,7 @@
 - icacls "D:\vaibhav-password.pem" /remove "NT AUTHORITY\SYSTEM"
 - icacls "D:\vaibhav-password.pem" /remove "BUILTIN\Users"
 - icacls "D:\vaibhav-password.pem"   ===>o/p: VAIBHAV\vaibh:(F)
-- ssh -i "D:\vaibhav-password.pem" ubuntu@3.104.123.119
+- ssh -i "D:\vaibhav-password.pem" ubuntu@54.66.237.169
   - check if internet is present or not
 
   - example for icacls: icacls "C:\path\to\file" /grant UserOrGroup:(Permissions)
@@ -58,3 +58,6 @@
 
 - https://certbot.eff.org/
 - goto the website and follow along and just by firing few commands we will be able to achieve a certifcate which will enable to run the website securely on port 443 aka https
+
+- aws: *route 53*, for DNS update if you are using GOdaddy
+- elastic ip, if we want to create a static ip and allocate it to any istance as, whenever we stop the instance and start it again, the IP changes
