@@ -8,7 +8,7 @@
 Required things to start with this repo
 
 - npm init -y
-- npm install prisma typescript ts-node @types/node --save-dev
+- npm install prisma typescript ts-node @types/node --save
 - npx tsc --init
 - npx prisma init
 - npx prisma migrate dev --name UserAndTodoAdded
