@@ -58,7 +58,7 @@ userRouter.post('/signin', async (c) => {
       });
     } else {
     }
-    return c.json({ user });
+    return c.json({ user, jwt });
   } catch (e) {
     c.status(403);
     return c.json({ error: e });
