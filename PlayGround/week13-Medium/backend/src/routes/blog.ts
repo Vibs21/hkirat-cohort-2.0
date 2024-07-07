@@ -7,25 +7,32 @@ export const blogRouter = new Hono<{
     Bindings: {
         JWT_SECRET: string;
         DATABASE_URL: string;
-    };
+    },
+    Variables :{
+        userId: string
+    }
 }>();
 
 //NOTE: Authenticating specific routes using middleware in HONO
 blogRouter.use('/*', async (c, next) => {
     const jwt = c.req.header('Authorization');
     if (!jwt) {
-        c.status(401);
+        c.status(403);
         return c.json({ error: 'unauthorized' });
     }
     const token = jwt.split(' ')[1];
-    const payload = await verify(token, c.env.JWT_SECRET);
-    if (!payload) {
-        c.status(401);
+    try{
+        const payload = await verify(token, c.env.JWT_SECRET);
+        if (!payload) {
+            c.status(403);
+            return c.json({ error: 'unauthorized' });
+        }
+        c.set('userId', String(payload.id)); //String convets the word into the String and the errors goes away
+        await next();
+    } catch(e) {
+        c.status(403);
         return c.json({ error: 'unauthorized' });
     }
-    //@ts-ignore
-    c.set('userId', payload.id);
-    await next();
 });
 
 blogRouter.post('/', async (c) => {
@@ -95,6 +102,7 @@ blogRouter.get('/bulk', async (c) => {
 
 //NOTE: When from GUI we are sending to /bulk or /sadasds (/:id) from GUI it looks same, hence updated the url or keep 
 // the url with query param below, 
+// route: '.bulk' and ':/id' //from UI it looks same to UONO, so either bulk should be above the :id, or update url
 blogRouter.get('id/:id', async (c) => {
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
