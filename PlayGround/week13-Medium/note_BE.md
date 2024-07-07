@@ -16,6 +16,27 @@
 7. npx prisma generate --no-engine //remove the query engine binaries from prisma client and take care of it remorely
 8. npm install @prisma/extension-accelerate
 
+*Once the APP is UP and Running*
+
+9. npx wrangler login
+10. npm run deploy 
+    1.  **this will deploy it in clouldflare environment**
+
+
+*Common Folder*
+
+1. mkdir common
+2. cd common
+3. npm init -y
+4. npx tsc --init
+5. Update tsconfig.json
+   1. "rootDir": "./src",
+   2. "outDir": "./dist",
+   3. "declaration": true,
+6. Add src to .npmignore
+7. npm i zod
+8. npx tsc -b //after making all the changes into src/index.ts file
+9. npm publish --access public
 
 
 
