@@ -37,7 +37,12 @@
 7. npm i zod
 8. npx tsc -b //after making all the changes into src/index.ts file
 9. npm publish --access public
-
+10. **Very IMP Update CORS**
+    1.  app.use('/*', cors({
+            origin: '*', // Change '*' to specific origin(s) if needed
+            allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+            allowHeaders: ['Content-Type', 'Authorization']
+         }));
 
 
 
