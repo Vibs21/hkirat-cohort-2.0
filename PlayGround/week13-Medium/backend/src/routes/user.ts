@@ -1,17 +1,31 @@
+import { PrismaClient } from '@prisma/client/edge';
+import { withAccelerate } from '@prisma/extension-accelerate';
 import { signinInput, signupInput } from '@vaibhavb_21/common-app';
 import { Hono } from 'hono';
 import { sign, verify } from 'hono/jwt';
 
 export const userRouter = new Hono<{
     Bindings: {
+        DATABASE_URL: string;
         JWT_SECRET: string;
     };
 }>();
 
+userRouter.use('*', async (c, next) => {
+    const prisma = new PrismaClient({
+      datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+    //@ts-ignore
+    c.set('prisma', prisma);
+    await next();
+});
+
 userRouter.post('/signup', async (c) => {
     //@ts-ignore
-    const prisma = c.get('prisma');
-
+    // const prisma = c.get('prisma');
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL,
+      }).$extends(withAccelerate());
     const body = await c.req.json();
     const {success} = signupInput.safeParse(body);
     if(!success) {
@@ -38,8 +52,9 @@ userRouter.post('/signup', async (c) => {
 });
 
 userRouter.post('/signin', async (c) => {
+    console.log('logged============================?')
     //@ts-ignore
-    const prisma = c.get('prisma');
+    const prisma = await c.get('prisma');
     const body = await c.req.json();
     //   const jwt = c.req.header().authorization.split(' ')[1];
 

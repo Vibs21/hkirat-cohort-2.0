@@ -14,6 +14,8 @@ export const blogRouter = new Hono<{
     }
 }>();
 
+
+
 //NOTE: Authenticating specific routes using middleware in HONO
 blogRouter.use('/*', async (c, next) => {
     const jwt = c.req.header('Authorization');

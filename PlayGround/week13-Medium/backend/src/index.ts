@@ -16,24 +16,19 @@ const app = new Hono<{
 
 //.basePath('/api/v1')
 
-
-
 app.use('/*', cors({
-  origin: '*', // Change '*' to specific origin(s) if needed
-  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowHeaders: ['Content-Type', 'Authorization']
-}));
+  origin: '*',
+  allowHeaders: ['Content-Type', 'Authorization'],
+  allowMethods: ['POST', 'GET', 'OPTIONS'],
+  exposeHeaders: ['Content-Length'],
+  maxAge: 600,
+  credentials: true,
+}))
+
 
 
 //NOTE: Declaration of global varible using middle ware
-app.use('*', async (c, next) => {
-  const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());
-  //@ts-ignore
-  c.set('prisma', prisma);
-  await next();
-});
+
 
 app.get('/api/v1/user', (c) => c.json({ message: 'User route' }));
 
