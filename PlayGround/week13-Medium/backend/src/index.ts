@@ -1,7 +1,4 @@
-import { PrismaClient } from '@prisma/client/edge';
-import { withAccelerate } from '@prisma/extension-accelerate';
 import { Hono } from 'hono';
-import { sign, verify, decode } from 'hono/jwt';
 import { userRouter } from './routes/user';
 import { blogRouter } from './routes/blog';
 import { cors } from 'hono/cors';
@@ -16,14 +13,7 @@ const app = new Hono<{
 
 //.basePath('/api/v1')
 
-app.use('/*', cors({
-  origin: '*',
-  allowHeaders: ['Content-Type', 'Authorization'],
-  allowMethods: ['POST', 'GET', 'OPTIONS'],
-  exposeHeaders: ['Content-Length'],
-  maxAge: 600,
-  credentials: true,
-}))
+app.use('/*', cors());
 
 
 
