@@ -37,3 +37,8 @@
 
 **SingleTon**
 - Initialize the singleton prisma client to avoid multipe connects issue
+
+
+**'use server'**
+- use 'use server' when you don't want to send the component to the FE and want to use it features in the FE and BE, .e.g. signup.tsx file
+  - mayeb it's imp to keep it inside the folder app/actions
