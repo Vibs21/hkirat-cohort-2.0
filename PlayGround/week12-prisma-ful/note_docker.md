@@ -1,18 +1,18 @@
 *Steps to up and running Prisma*
 
 - npm init -y //initialise node app
-- npm install prisma typescript ts-node @types/node --save //add depedencies
+- npm install prisma typescript ts-node @types/node --save //add dependencies
 - npx tsc --init //initialize typescript //initialize a typescript
 - npx prisma init //initialize a fresh prisma project
 
 *Quick Docker*
 
 - *Docker run mongo* //to run mongo locally, it also downloads the recourses
-  - this will run the image in the default port of the image inside the cotainer and we can't react it to it yet
+  - this will run the image in the default port of the image inside the container and we can't react it to it yet
 - *docker run -d -p 27017(yaha_Se_sunna):27017(yaha_pe_sunna) mongo*
-  - this cmd let's you do the port mapping and run mongo db in the detached mode, now you can connect with DB runing inside the docker from the outside
+  - this cmd let's you do the port mapping and run mongo db in the detached mode, now you can connect with DB running inside the docker from the outside
   - all the time you hit this cmd, the docker will run with new name/container, solution below
-  - *'-d'* let's you run it in deatched mode, meaning you can run docker in the background, rm it if you want to see logs
+  - *'-d'* let's you run it in detached mode, meaning you can run docker in the background, rm it if you want to see logs
 - *docker ps*
   - Inspect running containers
   - *docker kill* <container_id>`
@@ -45,3 +45,8 @@
     - -e POSTGRES_USER, add it after password
 
 Note: on the right what you are seeing the default port of the databases
+
+**connect it via terminal**
+- export PGPASSWORD=mysecretpassword
+- psql -h localhost -U postgres -d postgres
+
