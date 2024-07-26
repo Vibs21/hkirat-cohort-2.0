@@ -47,6 +47,9 @@
 Note: on the right what you are seeing the default port of the databases
 
 **connect it via terminal**
-- export PGPASSWORD=mysecretpassword
 - psql -h localhost -U postgres -d postgres
 
+OR
+- docker ps //to get the container id
+- docker exec -it 7d9648157246 /bin/bash
+- psql -U postgres
