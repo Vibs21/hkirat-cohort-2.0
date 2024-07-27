@@ -40,3 +40,6 @@
 12. import { PrismaClient } from '@repo/db/client'
     1.  if you notice the method of prismaClient and all will always be same as we are importing the same Prisma which we have always imported but the only difference now is the place from where we are now importing it.
     2.  We need to increase the reusability of the code and hence we have put it in the package folder and exporting it from there and importing it here and if you see, rest all the things initialization and every things are same only.
+
+
+- npx prisma studio

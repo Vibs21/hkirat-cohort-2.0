@@ -53,3 +53,4 @@ OR
 - docker ps //to get the container id
 - docker exec -it 7d9648157246 /bin/bash
 - psql -U postgres
+- npx prisma studio
