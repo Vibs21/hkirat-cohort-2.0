@@ -5,6 +5,8 @@ import { Center } from "@repo/ui/center";
 import { Select } from "@repo/ui/select";
 import { useState } from "react";
 import { TextInput } from "@repo/ui/textinput";
+import { useSession } from 'next-auth/react';
+import { createOnRampTransaction } from '../app/lib/actions/createOnrampTransaction';
 
 const SUPPORTED_BANKS = [{
     name: "HDFC Bank",
@@ -15,28 +17,33 @@ const SUPPORTED_BANKS = [{
 }];
 
 export const AddMoney = () => {
+    const session = useSession();
+    const [amt, setAmt] = useState(0);
     const [redirectUrl, setRedirectUrl] = useState(SUPPORTED_BANKS[0]?.redirectUrl);
-    return <Card title="Add Money">
-    <div className="w-full">
-        <TextInput label={"Amount"} placeholder={"Amount"} onChange={() => {
-
-        }} />
-        <div className="py-4 text-left">
-            Bank
+    const [provider, setProvider] = useState(SUPPORTED_BANKS[0]?.name || "");
+    const updateRampTrans = async () => {
+        await createOnRampTransaction(provider, amt);
+    }
+    return (<Card title="Add Money">
+        <div className="w-full">
+            <TextInput label={"Amount"} placeholder={"Amount"} onChange={(val) => {
+                setAmt(val);
+            }} />
+            <div className="py-4 text-left">
+                Bank
+            </div>
+            <Select onSelect={(value) => {
+                setRedirectUrl(SUPPORTED_BANKS.find(x => x.name === value)?.redirectUrl || "")
+                setProvider(SUPPORTED_BANKS.find(x => x.name === value)?.name || "")
+            }} options={SUPPORTED_BANKS.map(x => ({
+                key: x.name,
+                value: x.name
+            }))} />
+            <div className="flex justify-center pt-4">
+                <Button onClick={updateRampTrans}>
+                    Add Money
+                </Button>
+            </div>
         </div>
-        <Select onSelect={(value) => {
-            setRedirectUrl(SUPPORTED_BANKS.find(x => x.name === value)?.redirectUrl || "")
-        }} options={SUPPORTED_BANKS.map(x => ({
-            key: x.name,
-            value: x.name
-        }))} />
-        <div className="flex justify-center pt-4">
-            <Button onClick={() => {
-                window.location.href = redirectUrl || "";
-            }}>
-            Add Money
-            </Button>
-        </div>
-    </div>
-</Card>
+    </Card>)
 }
