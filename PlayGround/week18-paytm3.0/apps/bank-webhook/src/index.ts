@@ -15,38 +15,53 @@ app.post("/hdfcWebhook", async (req, res) => {
         token: req.body.token,
         userId: req.body.user_identifier,
         amount: req.body.amount
-    };
+    }; 
 
-    try {
-        await db.$transaction([
-            db.balance.updateMany({
-                where: {
-                    userId: Number(paymentInformation.userId)
-                },
-                data: {
-                    amount: {
-                        // You can also get this from your DB
-                        increment: Number(paymentInformation.amount)
+    const ramp = await db.onRampTransaction.findFirst({
+        where: {
+            token: paymentInformation.token,
+            status: 'Processing'
+        }
+    })
+
+    console.log('>>>>>>>>>>>>>> ramp', ramp)
+
+    if (ramp) {
+        try {
+            await db.$transaction([
+                db.balance.updateMany({
+                    where: {
+                        userId: Number(paymentInformation.userId)
+                    },
+                    data: {
+                        amount: { 
+                            // You can also get this from your DB
+                            increment: Number(paymentInformation.amount)
+                        }
                     }
-                }
-            }),
-            db.onRampTransaction.updateMany({
-                where: {
-                    token: paymentInformation.token
-                }, 
-                data: {
-                    status: "Success",
-                }
+                }),
+                db.onRampTransaction.updateMany({
+                    where: {
+                        token: paymentInformation.token,
+                    }, 
+                    data: {
+                        status: "Success",
+                    }
+                })
+            ]);
+    
+            res.json({
+                message: "Captured"
             })
-        ]);
-
-        res.json({
-            message: "Captured"
-        })
-    } catch(e) {
-        console.error(e);
+        } catch(e) {
+            console.error(e);
+            res.status(411).json({
+                message: "Error while processing webhook"
+            })
+        }
+    } else {
         res.status(411).json({
-            message: "Error while processing webhook"
+            message: "Quit messing around with same token id!"
         })
     }
 
