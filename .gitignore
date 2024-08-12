@@ -29,3 +29,15 @@ src/assets/bootstrap-icons
 
 playground/**/**/node_modules
 playground/week2/http-server/package-lock.json
+
+# Build Outputs
+.next/
+out/
+build
+dist
+**/dist
+
+# Turbo
+.turbo
+
+**/.next
